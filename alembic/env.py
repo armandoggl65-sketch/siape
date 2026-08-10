@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from config.settings import settings  # noqa: E402
 from siape.storage.models import Base  # noqa: E402
+from siape.storage import geo_models  # noqa: E402,F401 — registra tablas geo (Fase 5) en Base.metadata
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

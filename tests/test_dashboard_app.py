@@ -2,7 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from siape.storage.models import Actor, Base, Fuente, Observacion
+from siape.storage.models import Actor, Fuente, Observacion
+from tests.conftest import create_all_sin_geo
 
 
 def _seeded_engine():
@@ -10,7 +11,7 @@ def _seeded_engine():
     engine = create_engine(
         "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
     )
-    Base.metadata.create_all(engine)
+    create_all_sin_geo(engine)
     with Session(engine) as session:
         actor = Actor(nombre="Tonanzin Fernández")
         fuente = Fuente(nombre="Instagram propio", source_level=3, tipo="redes")
