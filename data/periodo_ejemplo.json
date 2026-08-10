@@ -1,0 +1,87 @@
+{
+  "_nota": "Dataset de EJEMPLO con datos FICTICIOS, usado solo para probar el pipeline (Opción 1) sin depender de captura real. No representa mediciones reales.",
+  "periodo": {
+    "municipio": "San Pedro Cholula, Puebla",
+    "proceso": "Elección local 2027",
+    "fecha_inicio": "2026-08-01",
+    "fecha_corte": "2026-08-07",
+    "horizonte": "intercampaña"
+  },
+  "actor_principal": {
+    "nombre": "Tonanzin Fernández",
+    "cargo_actual": "Presidenta municipal",
+    "partido": "Ejemplo Partido A",
+    "aspiracion": "Reelección"
+  },
+  "adversarios": [
+    {"nombre": "Adversario Ejemplo 1", "partido": "Ejemplo Partido B", "cargo_actual": null},
+    {"nombre": "Adversario Ejemplo 2", "partido": "Ejemplo Partido C", "cargo_actual": "Regidor"}
+  ],
+  "kpis": [
+    {
+      "kpi": "seguidores_instagram",
+      "actor": "Tonanzin Fernández",
+      "valor": 18200,
+      "variacion_pct": 1.4,
+      "confianza": "alto",
+      "fecha_corte": "2026-08-07",
+      "source_level": 3
+    },
+    {
+      "kpi": "tasa_interaccion_instagram",
+      "actor": "Tonanzin Fernández",
+      "valor": 3.1,
+      "variacion_pct": -0.4,
+      "confianza": "medio",
+      "fecha_corte": "2026-08-07",
+      "source_level": 3
+    },
+    {
+      "kpi": "share_of_voice_pct",
+      "actor": "Tonanzin Fernández",
+      "valor": 42.0,
+      "variacion_pct": 2.0,
+      "confianza": "medio",
+      "fecha_corte": "2026-08-07",
+      "source_level": 3
+    }
+  ],
+  "observaciones": [
+    {
+      "fecha": "2026-08-03",
+      "actor": "Tonanzin Fernández",
+      "fuente_nombre": "Boletín Ayuntamiento SPC",
+      "source_level": 1,
+      "tipo_fuente": "oficial",
+      "tema": "obra pública",
+      "sentimiento": "positivo",
+      "confianza": "alto",
+      "texto_resumen": "Inauguración de rehabilitación de calle en el centro histórico.",
+      "no_confirmado": false
+    },
+    {
+      "fecha": "2026-08-05",
+      "actor": "Adversario Ejemplo 1",
+      "fuente_nombre": "Medio Local Ejemplo",
+      "source_level": 2,
+      "tipo_fuente": "medios",
+      "tema": "seguridad",
+      "sentimiento": "negativo",
+      "confianza": "medio",
+      "texto_resumen": "Nota señala incremento de quejas ciudadanas por alumbrado público.",
+      "no_confirmado": false
+    },
+    {
+      "fecha": "2026-08-06",
+      "actor": "Tonanzin Fernández",
+      "fuente_nombre": "Cuenta X @ejemplo_ciudadano",
+      "source_level": 4,
+      "tipo_fuente": "no_verificado",
+      "tema": "agua",
+      "sentimiento": "negativo",
+      "confianza": "bajo",
+      "texto_resumen": "Trascendido no confirmado sobre corte de suministro en una colonia; no triangulado con otra fuente.",
+      "no_confirmado": true
+    }
+  ]
+}
