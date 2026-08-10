@@ -1,0 +1,14 @@
+anthropic>=0.40
+SQLAlchemy>=2.0
+alembic>=1.13
+psycopg2-binary>=2.9
+GeoAlchemy2>=0.15
+pandas>=2.2
+pydantic>=2.7
+python-dotenv>=1.0
+feedparser>=6.0
+google-api-python-client>=2.130
+requests>=2.32
+streamlit>=1.36
+plotly>=5.22
+pytest>=8.2
