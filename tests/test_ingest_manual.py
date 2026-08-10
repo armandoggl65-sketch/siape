@@ -1,5 +1,6 @@
 from siape.ingest.base import RawObservation
-from siape.ingest.manual.csv_loader import CSVConnector, persist_observations
+from siape.ingest.manual.csv_loader import CSVConnector
+from siape.ingest.persist import persist_observations
 from siape.storage.models import Observacion
 
 CSV_HEADER = (
