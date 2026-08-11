@@ -15,11 +15,11 @@ from config.settings import settings
 from siape.analysis.schemas import ReporteEjecutivo
 
 PROMPT_PATH = Path(__file__).parent / "prompts" / "analyst_system.md"
+TOOL_NAME = "reportar_analisis"
 
 USER_INSTRUCTIONS = (
-    "Datos del periodo (JSON). Responde solo con el JSON de ReporteEjecutivo "
-    "descrito en la Sección 10 del prompt de sistema, sin texto adicional ni "
-    "bloques de código markdown.\n\n"
+    "Datos del periodo (JSON). Analiza y registra el resultado usando la "
+    f"herramienta `{TOOL_NAME}`.\n\n"
 )
 
 
@@ -39,9 +39,24 @@ def build_client() -> anthropic.Anthropic:
     return anthropic.Anthropic(api_key=settings.anthropic_api_key)
 
 
-def parse_response(raw_text: str) -> ReporteEjecutivo:
-    data = json.loads(raw_text)
-    return ReporteEjecutivo.model_validate(data)
+def build_report_tool() -> dict[str, Any]:
+    """Herramienta cuyo input_schema es el JSON Schema de ReporteEjecutivo.
+
+    Forzar la respuesta a través de tool use (en vez de pedir JSON libre por
+    texto) evita que el modelo invente nombres de campo o formatos de número
+    distintos a los del esquema (p. ej. "+1.4%" como string en vez de 1.4).
+    """
+    schema = ReporteEjecutivo.model_json_schema()
+    return {
+        "name": TOOL_NAME,
+        "description": "Registra el reporte ejecutivo estructurado del periodo analizado.",
+        "input_schema": schema,
+    }
+
+
+def parse_response(response: Any) -> ReporteEjecutivo:
+    tool_use = next(block for block in response.content if block.type == "tool_use")
+    return ReporteEjecutivo.model_validate(tool_use.input)
 
 
 def run_analysis(
@@ -59,6 +74,8 @@ def run_analysis(
         model=settings.siape_model,
         max_tokens=settings.siape_max_tokens,
         system=system_prompt,
+        tools=[build_report_tool()],
+        tool_choice={"type": "tool", "name": TOOL_NAME},
         messages=[
             {
                 "role": "user",
@@ -68,5 +85,4 @@ def run_analysis(
         ],
     )
 
-    raw_text = response.content[0].text
-    return parse_response(raw_text)
+    return parse_response(response)
