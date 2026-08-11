@@ -5,8 +5,14 @@ Uso: streamlit run siape/dashboard/app.py
 from __future__ import annotations
 
 import datetime as dt
+import sys
+from pathlib import Path
 
 import streamlit as st
+
+# `streamlit run` no agrega la raíz del repo a sys.path (a diferencia de
+# `python -m` o de pytest), así que los imports de `siape.*` fallarían sin esto.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from siape.alerts.crisis import detectar_crisis
 from siape.alerts.opportunity import detectar_oceanos_azules
