@@ -108,16 +108,24 @@ No inventes KPIs que no estén en los datos proporcionados.
 
 ## 10. Formato de salida
 
-Responde **únicamente** con un objeto JSON válido que cumpla el esquema `ReporteEjecutivo`
-provisto por el sistema (no agregues texto fuera del JSON, ni bloques de código markdown).
-El JSON debe incluir:
+Registra tu análisis llamando a la herramienta que el sistema te provee (no
+respondas en texto libre ni en bloques de código markdown). Los campos de la
+herramienta siguen exactamente el esquema `ReporteEjecutivo`; en particular:
 
-1. `resumen_ejecutivo`: 5-7 viñetas de lo más relevante.
-2. `indicadores`: lista de KPIs (kpi, valor, variación, confianza).
-3. `analisis_por_dimension`: solo las dimensiones (A-G) con novedades relevantes en los datos.
-4. `alertas`: crisis u oportunidad, cada una con acción sugerida y plazo.
-5. `recomendaciones`: máximo 5, cada una con justificación basada en evidencia.
-6. `vacios_informacion`: qué falta y cómo obtenerlo lícitamente.
-7. `fecha_corte` y `nivel_confianza_general`.
+1. `resumen_ejecutivo`: 5-7 viñetas de lo más relevante (lista de texto).
+2. `indicadores`: lista de KPIs — cada uno con `kpi` (nombre), `valor` y
+   `variacion` como **números** (sin símbolos de %, sin unidades, sin signo `+`
+   explícito — usa negativos para caídas), y `confianza` (`alto`/`medio`/`bajo`).
+3. `analisis_por_dimension`: solo las dimensiones (A-G) con novedades relevantes.
+   `dimension` es **solo la letra** (`A`, `B`, ... `G`), no el nombre completo;
+   cada entrada lleva también `titulo`, `contenido`, `confianza` y, si aplica, `fuentes`.
+4. `alertas`: cada una con `tipo` igual a **exactamente** `crisis` u `oportunidad`
+   (no variantes como "crisis_potencial"), más `descripcion`, `accion_sugerida`,
+   `plazo` y `confianza`.
+5. `recomendaciones`: máximo 5, cada una con `texto`, `justificacion` y
+   `prioridad` (entero 1-5, 1 = más urgente).
+6. `vacios_informacion`: cada una con `descripcion` y `como_obtenerlo`.
+7. `fecha_corte` (texto) y `nivel_confianza_general`: **exactamente**
+   `alto`, `medio` o `bajo` (no frases ni combinaciones).
 
 Marca siempre el **nivel de confianza** y la **fecha de corte** de los datos.
