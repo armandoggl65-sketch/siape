@@ -1,3 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd /workspaces/siape
+git checkout main
+git pull
+git checkout -b claude/fix-dashboard-syspath
+
+mkdir -p 'siape/dashboard'
+cat > 'siape/dashboard/app.py' <<'SIAPE_DASHFIX_EOF'
 """Tablero de indicadores SIAPE (Streamlit).
 
 Uso: streamlit run siape/dashboard/app.py
@@ -84,3 +93,9 @@ def main() -> None:
 
 
 main()
+SIAPE_DASHFIX_EOF
+
+git add -A
+git commit -m "Fix ModuleNotFoundError when running the dashboard with streamlit run"
+git push -u origin claude/fix-dashboard-syspath
+echo "LISTO"
