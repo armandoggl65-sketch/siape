@@ -5,4 +5,5 @@ __pycache__/
 siape_dev.db
 data/*.json
 !data/periodo_ejemplo.json
+!data/reporte_ejemplo.json
 .streamlit/secrets.toml
