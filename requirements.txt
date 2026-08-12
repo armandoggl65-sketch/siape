@@ -12,3 +12,8 @@ requests>=2.32
 streamlit>=1.36
 plotly>=5.22
 pytest>=8.2
+
+# Solo para scripts/extraer_secciones_shapefile.py (herramienta de carga de
+# cartografía geo, Fase 5/6 — no se usan en el resto de la aplicación)
+pyshp>=2.3
+pyproj>=3.6
