@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from siape.alerts.crisis import detectar_crisis
 from siape.alerts.opportunity import detectar_oceanos_azules
 from siape.dashboard.semaforo import semaforo_indicador
-from siape.metrics.build_indicadores import construir_indicadores
+from siape.metrics.historial import construir_indicadores_con_historial, registrar_corte
 from siape.storage.db import make_engine, make_session_factory
 from siape.storage.models import Actor
 
@@ -48,19 +48,25 @@ def main() -> None:
         fecha_inicio_str, fecha_fin_str = str(fecha_inicio), str(fecha_fin)
 
         st.subheader("Indicadores clave")
-        indicadores = construir_indicadores(session, actor_id, fecha_inicio_str, fecha_fin_str)
+        indicadores = construir_indicadores_con_historial(
+            session, actor_id, fecha_inicio_str, fecha_fin_str, fecha_corte=fecha_fin_str
+        )
         if indicadores:
             filas = [
                 {
                     "KPI": i.kpi,
                     "Valor": i.valor,
-                    "Variación": i.variacion,
+                    "Variación": f"{i.variacion:+.2f}%" if i.variacion is not None else "—",
                     "Confianza": i.confianza,
                     "Semáforo": semaforo_indicador(i),
                 }
                 for i in indicadores
             ]
             st.table(filas)
+
+            if st.button("Registrar este corte", help="Guarda estos valores para poder comparar futuros periodos contra hoy."):
+                registrar_corte(session, actor_id, indicadores, fecha_fin_str)
+                st.success(f"Corte {fecha_fin_str} registrado. Los próximos periodos mostrarán variación contra este.")
         else:
             st.info("Sin indicadores calculables para el periodo seleccionado.")
 
