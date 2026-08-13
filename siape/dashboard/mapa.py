@@ -3,9 +3,11 @@
 Requiere vínculos poblados en `observacion_seccion` (Fase 5, tabla puente
 entre `observaciones` y `secciones_electorales`). La agregación en sí es
 SQL simple sobre IDs — no ejecuta operaciones espaciales, así que es
-testable sin PostGIS. Las consultas espaciales reales (determinar en qué
-sección cae una observación) son responsabilidad de una capa de carga
-geográfica futura, fuera del alcance de este módulo.
+testable sin PostGIS. Los vínculos se pueblan en la carga (Fase 6.3, ver
+`siape.ingest.geo_link.vincular_a_secciones`), a partir de la clave_ine
+que quien captura el dato asigna manualmente en el CSV — no hay
+geocodificación automática (determinar en qué sección cae una observación
+sin esa etiqueta) en este alcance.
 """
 from __future__ import annotations
 

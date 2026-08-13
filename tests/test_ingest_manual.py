@@ -5,7 +5,7 @@ from siape.storage.models import Observacion
 
 CSV_HEADER = (
     "actor_nombre,fuente_nombre,source_level,tipo_fuente,plataforma,tipo,tema,"
-    "sentimiento,texto,valor_numerico,url,fecha,confianza,no_confirmado\n"
+    "sentimiento,texto,valor_numerico,url,fecha,confianza,no_confirmado,seccion_ine\n"
 )
 
 
@@ -14,9 +14,9 @@ def test_csv_connector_parsea_filas(tmp_path):
     csv_path.write_text(
         CSV_HEADER
         + "Tonanzin Fernández,Boletín Ayuntamiento SPC,1,oficial,,mencion,obra pública,"
-        "positivo,Inauguración de calle,,,2026-08-03,alto,false\n"
+        "positivo,Inauguración de calle,,,2026-08-03,alto,false,210101\n"
         + "Tonanzin Fernández,Cuenta X @ejemplo,4,no_verificado,X,mencion,agua,negativo,"
-        "Trascendido sin confirmar,,,2026-08-06,bajo,\n",
+        "Trascendido sin confirmar,,,2026-08-06,bajo,,\n",
         encoding="utf-8",
     )
 
@@ -26,9 +26,12 @@ def test_csv_connector_parsea_filas(tmp_path):
     assert all(isinstance(o, RawObservation) for o in observations)
     assert observations[0].source_level == 1
     assert observations[0].no_confirmado is False
+    assert observations[0].seccion_ine == "210101"
     # Nivel 4 se marca como no confirmado aunque el CSV lo deje vacío.
     assert observations[1].source_level == 4
     assert observations[1].no_confirmado is True
+    # seccion_ine es opcional: fila vacía se interpreta como None.
+    assert observations[1].seccion_ine is None
 
 
 def test_persist_observations_crea_actor_y_fuente(db_session, tmp_path):

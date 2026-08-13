@@ -6,9 +6,13 @@ que el sistema sea útil aunque ningún API automatizado esté disponible.
 Columnas esperadas del CSV:
     actor_nombre, fuente_nombre, source_level, tipo_fuente, plataforma,
     tipo, tema, sentimiento, texto, valor_numerico, url, fecha, confianza,
-    no_confirmado
+    no_confirmado, seccion_ine
 Las columnas vacías se interpretan como None. `no_confirmado` acepta
 "true"/"false" (insensible a mayúsculas); vacío equivale a false.
+`seccion_ine` es opcional (Fase 5/6, requiere PostGIS): la clave_ine de la
+sección electoral donde ocurrió/aplica la observación, cuando quien captura
+el dato la conoce (p. ej. una queja ubicada en una colonia concreta). Se
+vincula con `siape.ingest.geo_link.vincular_a_secciones` tras persistir.
 """
 from __future__ import annotations
 
@@ -55,6 +59,7 @@ class CSVConnector(BaseConnector):
                         fecha=row["fecha"].strip(),
                         confianza=row["confianza"].strip(),
                         no_confirmado=_parse_bool(row.get("no_confirmado")),
+                        seccion_ine=_clean(row.get("seccion_ine")),
                     )
                 )
         return observations

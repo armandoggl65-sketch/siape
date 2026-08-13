@@ -28,6 +28,7 @@ class RawObservation:
     valor_numerico: float | None = None
     url: str | None = None
     no_confirmado: bool = False
+    seccion_ine: str | None = None  # clave_ine de secciones_electorales (Fase 5/6, opcional)
 
     def __post_init__(self) -> None:
         if self.source_level not in (1, 2, 3, 4):
