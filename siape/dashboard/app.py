@@ -19,6 +19,7 @@ from siape.alerts.opportunity import detectar_oceanos_azules
 from siape.dashboard.mapa import resumen_por_seccion
 from siape.dashboard.semaforo import semaforo_indicador
 from siape.metrics.historial import construir_indicadores_con_historial, registrar_corte
+from siape.metrics.transparencia import resumen_fuentes, resumen_temas
 from siape.storage.db import make_engine, make_session_factory
 from siape.storage.models import Actor
 
@@ -88,6 +89,47 @@ def main() -> None:
                 f"🟢 OPORTUNIDAD — {alerta.descripcion} · Acción: {alerta.accion_sugerida} "
                 f"(plazo: {alerta.plazo})"
             )
+
+        st.subheader("Agenda temática")
+        temas = resumen_temas(session, actor_id, fecha_inicio_str, fecha_fin_str)
+        if temas:
+            filas_temas = [
+                {
+                    "Tema": t.tema,
+                    "Menciones totales": t.total_observaciones,
+                    "Menciones del actor": t.observaciones_actor,
+                    "Quién domina": t.actor_dominante or "—",
+                    "Saldo de opinión del actor": (
+                        f"{t.saldo_opinion_actor:+.1f}%"
+                        if t.saldo_opinion_actor is not None
+                        else "sin sentimiento etiquetado"
+                    ),
+                }
+                for t in temas
+            ]
+            st.table(filas_temas)
+        else:
+            st.info("Sin temas registrados en el periodo.")
+
+        st.subheader("Fuentes de la información")
+        st.caption(
+            "Jerarquía de verificabilidad (CLAUDE.md, Sección 4): Nivel 1 = oficial, "
+            "2 = medios, 3 = redes, 4 = no verificado."
+        )
+        fuentes = resumen_fuentes(session, actor_id, fecha_inicio_str, fecha_fin_str)
+        if fuentes:
+            filas_fuentes = [
+                {
+                    "Fuente": f.fuente,
+                    "Nivel de verificabilidad": f.nivel_etiqueta,
+                    "Tipo": f.tipo,
+                    "Observaciones": f.num_observaciones,
+                }
+                for f in fuentes
+            ]
+            st.table(filas_fuentes)
+        else:
+            st.info("Sin fuentes registradas en el periodo.")
 
         # secciones_electorales/observacion_seccion (Fase 5/6, opcional) solo existen
         # en PostgreSQL/PostGIS — el fallback de desarrollo (SQLite) no tiene esta capa.
