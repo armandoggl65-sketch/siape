@@ -68,3 +68,19 @@ def test_campos_opcionales_usan_default():
     reporte = ReporteEjecutivo.model_validate(minimo)
     assert reporte.indicadores == []
     assert reporte.alertas == []
+
+
+def test_localidad_es_opcional_en_alertas_y_recomendaciones():
+    data = dict(REPORTE_VALIDO)
+    reporte_sin_localidad = ReporteEjecutivo.model_validate(data)
+    assert reporte_sin_localidad.alertas[0].localidad is None
+    assert reporte_sin_localidad.recomendaciones[0].localidad is None
+
+    data_con_localidad = dict(REPORTE_VALIDO)
+    data_con_localidad["alertas"] = [{**REPORTE_VALIDO["alertas"][0], "localidad": "Sección 1801"}]
+    data_con_localidad["recomendaciones"] = [
+        {**REPORTE_VALIDO["recomendaciones"][0], "localidad": "Sección 1800"}
+    ]
+    reporte = ReporteEjecutivo.model_validate(data_con_localidad)
+    assert reporte.alertas[0].localidad == "Sección 1801"
+    assert reporte.recomendaciones[0].localidad == "Sección 1800"

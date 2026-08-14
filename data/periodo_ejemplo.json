@@ -57,7 +57,8 @@
       "sentimiento": "positivo",
       "confianza": "alto",
       "texto_resumen": "Inauguración de rehabilitación de calle en el centro histórico.",
-      "no_confirmado": false
+      "no_confirmado": false,
+      "localidad": "Sección 1800"
     },
     {
       "fecha": "2026-08-05",
@@ -81,7 +82,12 @@
       "sentimiento": "negativo",
       "confianza": "bajo",
       "texto_resumen": "Trascendido no confirmado sobre corte de suministro en una colonia; no triangulado con otra fuente.",
-      "no_confirmado": true
+      "no_confirmado": true,
+      "localidad": "Sección 1801"
     }
+  ],
+  "kpis_por_localidad": [
+    {"localidad": "Sección 1800", "clave_ine": "211800", "notoriedad": 3, "saldo_opinion": 66.7},
+    {"localidad": "Sección 1801", "clave_ine": "211801", "notoriedad": 2, "saldo_opinion": -100.0}
   ]
 }

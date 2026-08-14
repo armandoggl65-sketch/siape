@@ -54,7 +54,8 @@ def render_markdown(reporte: ReporteEjecutivo) -> str:
     lines.append("## 4. Alertas")
     if reporte.alertas:
         for a in reporte.alertas:
-            lines.append(f"- **[{a.tipo.upper()}]** {a.descripcion}")
+            etiqueta = f"[{a.tipo.upper()}]" if not a.localidad else f"[{a.tipo.upper()} — {a.localidad}]"
+            lines.append(f"- **{etiqueta}** {a.descripcion}")
             lines.append(f"  - Acción sugerida: {a.accion_sugerida} (plazo: {a.plazo})")
             lines.append(f"  - Confianza: {a.confianza}")
     else:
@@ -64,7 +65,8 @@ def render_markdown(reporte: ReporteEjecutivo) -> str:
     lines.append("## 5. Recomendaciones priorizadas")
     if reporte.recomendaciones:
         for r in sorted(reporte.recomendaciones, key=lambda x: x.prioridad):
-            lines.append(f"{r.prioridad}. {r.texto}")
+            texto = r.texto if not r.localidad else f"{r.texto} ({r.localidad})"
+            lines.append(f"{r.prioridad}. {texto}")
             lines.append(f"   - Justificación: {r.justificacion}")
     else:
         lines.append("_Sin recomendaciones en este periodo._")

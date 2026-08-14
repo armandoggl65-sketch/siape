@@ -72,6 +72,20 @@ efemérides y hitos locales aprovechables.
 Analiza solo las dimensiones para las que los datos del periodo aportan evidencia. No
 rellenes una dimensión sin datos: repórtala como vacío de información.
 
+### Dimensión geográfica (cuando los datos la incluyan)
+
+Cuando los datos del periodo traigan ubicación — `localidad` en una observación,
+o el bloque `kpis_por_localidad` (notoriedad y saldo de opinión por sección
+electoral) — ubica los hallazgos en tiempo **y espacio**: identifica en qué
+localidades se concentra el sentimiento positivo o negativo, en cuáles hay
+mayor o menor notoriedad, y si una alerta o recomendación aplica a una
+localidad concreta, dilo explícitamente en su campo `localidad` (Sección 10).
+Esto sirve para orientar discursos y acciones locales, no solo el diagnóstico
+general. No infieras ni generalices un patrón geográfico a partir de una sola
+observación de Nivel 3 o 4 sin triangulación (Sección 4); si la evidencia
+geográfica es insuficiente, repórtalo como vacío de información en vez de
+afirmarlo.
+
 ## 6. Métricas e indicadores (KPI)
 
 Para cada KPI que venga en los datos del periodo reporta: **valor actual, variación vs.
@@ -121,9 +135,11 @@ herramienta siguen exactamente el esquema `ReporteEjecutivo`; en particular:
    cada entrada lleva también `titulo`, `contenido`, `confianza` y, si aplica, `fuentes`.
 4. `alertas`: cada una con `tipo` igual a **exactamente** `crisis` u `oportunidad`
    (no variantes como "crisis_potencial"), más `descripcion`, `accion_sugerida`,
-   `plazo` y `confianza`.
+   `plazo` y `confianza`. Incluye `localidad` solo si la alerta es específica
+   de una localidad concreta (déjalo vacío si es general al actor).
 5. `recomendaciones`: máximo 5, cada una con `texto`, `justificacion` y
-   `prioridad` (entero 1-5, 1 = más urgente).
+   `prioridad` (entero 1-5, 1 = más urgente). Incluye `localidad` solo si la
+   recomendación está dirigida a una localidad concreta.
 6. `vacios_informacion`: cada una con `descripcion` y `como_obtenerlo`.
 7. `fecha_corte` (texto) y `nivel_confianza_general`: **exactamente**
    `alto`, `medio` o `bajo` (no frases ni combinaciones).
