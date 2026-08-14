@@ -123,7 +123,9 @@ CSV, para que el mapa de posicionamiento refleje datos reales (6.3, `scripts/car
 notoriedad y saldo de opinión por sección electoral, visibles en el tablero (6.4, `dashboard/mapa.py`);
 dimensión geográfica en el motor de análisis (6.5): `localidad` opcional en observaciones, alertas y
 recomendaciones, y `kpis_por_localidad` (`analysis/geo_context.py`) para que el LLM ubique hallazgos
-en espacio, no solo en tiempo.
+en espacio, no solo en tiempo; agenda temática y fuentes de la información visibles en el tablero
+(6.6, `metrics/transparencia.py`) — quién domina cada tema y con qué nivel de verificabilidad (1-4,
+CLAUDE.md Sección 4) se sostiene cada observación.
 
 Cada fase se cierra con pruebas en `tests/`.
 
