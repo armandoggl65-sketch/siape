@@ -16,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from siape.alerts.crisis import detectar_crisis
 from siape.alerts.opportunity import detectar_oceanos_azules
+from siape.dashboard.mapa import resumen_por_seccion
 from siape.dashboard.semaforo import semaforo_indicador
 from siape.metrics.historial import construir_indicadores_con_historial, registrar_corte
 from siape.storage.db import make_engine, make_session_factory
@@ -87,6 +88,32 @@ def main() -> None:
                 f"🟢 OPORTUNIDAD — {alerta.descripcion} · Acción: {alerta.accion_sugerida} "
                 f"(plazo: {alerta.plazo})"
             )
+
+        # secciones_electorales/observacion_seccion (Fase 5/6, opcional) solo existen
+        # en PostgreSQL/PostGIS — el fallback de desarrollo (SQLite) no tiene esta capa.
+        if engine.dialect.name != "sqlite":
+            st.subheader("Mapa de posicionamiento por localidad")
+            resumen = resumen_por_seccion(session, actor_id, fecha_inicio_str, fecha_fin_str)
+            if resumen:
+                filas_mapa = [
+                    {
+                        "Sección (INE)": r.clave_ine,
+                        "Nombre": r.nombre or "—",
+                        "Notoriedad": r.notoriedad,
+                        "Saldo de opinión": (
+                            f"{r.saldo_opinion:+.1f}%"
+                            if r.saldo_opinion is not None
+                            else "sin sentimiento etiquetado"
+                        ),
+                    }
+                    for r in resumen
+                ]
+                st.table(filas_mapa)
+            else:
+                st.info(
+                    "Sin observaciones vinculadas a una sección electoral en este periodo "
+                    "(carga el CSV con la columna seccion_ine para poblar este mapa)."
+                )
 
 
 main()
