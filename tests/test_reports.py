@@ -41,3 +41,34 @@ def test_render_markdown_incluye_todas_las_secciones():
     assert "## 6. Vacíos de información" in md
     assert "seguidores_instagram" in md
     assert "[CRISIS]" in md
+
+
+def test_render_markdown_muestra_localidad_cuando_esta_presente():
+    reporte_con_localidad = ReporteEjecutivo.model_validate(
+        {
+            "resumen_ejecutivo": ["Punto uno"],
+            "alertas": [
+                {
+                    "tipo": "crisis",
+                    "descripcion": "Quejas por agua",
+                    "accion_sugerida": "Enviar cuadrilla",
+                    "plazo": "24 horas",
+                    "confianza": "medio",
+                    "localidad": "Sección 1801",
+                }
+            ],
+            "recomendaciones": [
+                {
+                    "texto": "Visitar la zona",
+                    "justificacion": "Sentimiento negativo concentrado ahí",
+                    "prioridad": 1,
+                    "localidad": "Sección 1801",
+                }
+            ],
+            "fecha_corte": "2026-08-07",
+            "nivel_confianza_general": "medio",
+        }
+    )
+    md = render_markdown(reporte_con_localidad)
+    assert "[CRISIS — Sección 1801]" in md
+    assert "Visitar la zona (Sección 1801)" in md

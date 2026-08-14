@@ -120,7 +120,10 @@ reporte ejecutivo a partir de datos curados. *Entregable útil al final de esta 
 **Fase 6 — Profundización.** Historial real de métricas y variación entre cortes (6.1); cartografía
 real del INE para San Pedro Cholula (6.2); vínculo observación→sección electoral en la carga manual
 CSV, para que el mapa de posicionamiento refleje datos reales (6.3, `scripts/cargar_observaciones_csv.py`);
-notoriedad y saldo de opinión por sección electoral, visibles en el tablero (6.4, `dashboard/mapa.py`).
+notoriedad y saldo de opinión por sección electoral, visibles en el tablero (6.4, `dashboard/mapa.py`);
+dimensión geográfica en el motor de análisis (6.5): `localidad` opcional en observaciones, alertas y
+recomendaciones, y `kpis_por_localidad` (`analysis/geo_context.py`) para que el LLM ubique hallazgos
+en espacio, no solo en tiempo.
 
 Cada fase se cierra con pruebas en `tests/`.
 

@@ -30,12 +30,14 @@ class Alerta(BaseModel):
     accion_sugerida: str
     plazo: str
     confianza: NivelConfianza
+    localidad: str | None = None
 
 
 class Recomendacion(BaseModel):
     texto: str
     justificacion: str
     prioridad: int = Field(ge=1, le=5)
+    localidad: str | None = None
 
 
 class VacioInformacion(BaseModel):
